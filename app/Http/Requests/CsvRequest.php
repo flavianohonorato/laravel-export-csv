@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class CsvRequest extends FormRequest
 {
@@ -54,5 +55,15 @@ class CsvRequest extends FormRequest
             'cpf'       => 'CPF',
             'max'       => 'Máximo',
         ];
+    }
+
+    /**
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'cpf' => str_replace(['.', '-'], '', Str::match('/^\d{3}\.\d{3}\.\d{3}-\d{2}$/', $this->cpf))
+        ]);
     }
 }
