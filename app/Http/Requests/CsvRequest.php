@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CsvRequest extends FormRequest
 {
@@ -26,7 +27,8 @@ class CsvRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'email' => ['email', 'required'],
+            'email' => ['email', 'required', Rule::unique('users', 'email')->ignore($this->email)],
+            'password' => ['required'],
             'phone' => ['required'],
             'cpf' => ['required', 'max:11']
         ];
@@ -39,7 +41,7 @@ class CsvRequest extends FormRequest
     {
         return [
             'required'  => ':attribute é obrigatório!',
-            'unique'    => 'Já existe um registro para esse :attibute!',
+            'unique'    => 'Já existe um registro para esse :attribute!',
             'max'       => ':attribute não pode ser maior que :max!',
             'email'     => ':attribute está com formato inválido'
         ];
