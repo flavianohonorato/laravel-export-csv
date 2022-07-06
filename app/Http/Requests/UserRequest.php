@@ -3,10 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
-class CsvRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +29,7 @@ class CsvRequest extends FormRequest
             'email' => ['email', 'required', Rule::unique('users', 'email')->ignore($this->email)],
             'password' => ['required'],
             'phone' => ['required'],
-            'cpf' => ['required', 'max:11']
+            'cpf' => ['required', 'max:14']
         ];
     }
 
@@ -57,15 +56,5 @@ class CsvRequest extends FormRequest
             'cpf'       => 'CPF',
             'max'       => 'Máximo',
         ];
-    }
-
-    /**
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'cpf' => str_replace(['.', '-'], '', Str::match('/^\d{3}\.\d{3}\.\d{3}-\d{2}$/', $this->cpf))
-        ]);
     }
 }

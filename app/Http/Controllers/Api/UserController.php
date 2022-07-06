@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CsvRequest;
+use App\Http\Requests\UserRequest;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 
-class CsvController extends Controller
+class UserController extends Controller
 {
     /**
      * @var UserService $userService
@@ -23,10 +23,18 @@ class CsvController extends Controller
     }
 
     /**
-     * @param CsvRequest $request
+     * @return void
+     */
+    public function index()
+    {
+        return (new UserService())->getAll();
+    }
+
+    /**
+     * @param UserRequest $request
      * @return JsonResponse
      */
-    public function sendDataToJob(CsvRequest $request): JsonResponse
+    public function store(UserRequest $request): JsonResponse
     {
         try {
             $validator = validator()->make($request->all(), $request->rules(), $request->messages());

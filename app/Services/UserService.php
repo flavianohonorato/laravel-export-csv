@@ -14,4 +14,15 @@ class UserService
     {
         return User::create($data);
     }
+
+    /**
+     * @return array
+     */
+    public function getAll(): array
+    {
+        return User::query()
+            ->orderBy('id', 'ASC')
+            ->get()
+            ->toArray();
+    }
 }

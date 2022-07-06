@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -49,5 +50,15 @@ class User extends Authenticatable
     public function setPasswordAttribute($pass)
     {
         $this->attributes['password'] = bcrypt($pass);
+    }
+
+    /**
+     * @param $cpf
+     * @return void
+     */
+    public function setCpfAttribute($cpf)
+    {
+        $regex = '/^\d{3}\.\d{3}\.\d{3}-\d{2}$/';
+        $this->attributes['cpf'] = str_replace(['.', '-'], '', Str::match($regex, $cpf));
     }
 }
